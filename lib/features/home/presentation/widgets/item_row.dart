@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pricecalc/core/core.dart';
 
 class ItemRow extends StatelessWidget {
   ItemRow({super.key, this.index});
@@ -19,9 +20,8 @@ class ItemRow extends StatelessWidget {
             : _buildNameBox(),
         Icon(Icons.close),
         Flexible(
-          child: TextField(
+          child: TextFieldCustom(
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
             controller: countController,
           ),
         ),

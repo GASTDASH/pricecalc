@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/price_calc_app.dart';
 
 void main() async {
@@ -8,8 +8,8 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(ConditionAdapter());
-  Hive.registerAdapter(ItemAdapter());
-  await Hive.openBox<Item>('items');
+  Hive.registerAdapter(PriceAdapter());
+  await Hive.openBox<Price>('prices');
 
   runApp(const PriceCalcApp());
 }

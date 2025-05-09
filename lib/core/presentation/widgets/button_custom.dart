@@ -21,28 +21,31 @@ class ButtonCustom extends StatelessWidget {
 
     return Shimmer(
       enabled: isLoading,
-      child: InkWell(
+      child: Material(
         borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Ink(
-          width: double.infinity,
-          height: 60,
-          decoration: BoxDecoration(
-            color:
-                onTap != null
-                    ? theme.primaryColor
-                    : theme.hintColor.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            spacing: icon != null ? 6 : 0,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(text, style: TextStyle(color: Colors.white, fontSize: 16)),
-              icon != null
-                  ? Icon(icon, color: Colors.white)
-                  : SizedBox.shrink(),
-            ],
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Ink(
+            width: double.infinity,
+            height: 60,
+            decoration: BoxDecoration(
+              color:
+                  onTap != null
+                      ? theme.primaryColor
+                      : theme.hintColor.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              spacing: icon != null ? 6 : 0,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(text, style: TextStyle(color: Colors.white, fontSize: 16)),
+                icon != null
+                    ? Icon(icon, color: Colors.white)
+                    : SizedBox.shrink(),
+              ],
+            ),
           ),
         ),
       ),

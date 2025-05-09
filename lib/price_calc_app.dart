@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/routing/router.dart';
 
 class PriceCalcApp extends StatelessWidget {
@@ -11,7 +11,7 @@ class PriceCalcApp extends StatelessWidget {
     final primaryColor = Color(0xFF2A5CFF);
 
     return BlocProvider(
-      create: (context) => ItemsBloc(),
+      create: (context) => PriceBloc(),
       child: MaterialApp.router(
         title: 'Прайс калькулятор',
         theme: ThemeData(
