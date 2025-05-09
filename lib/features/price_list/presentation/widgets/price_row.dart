@@ -37,7 +37,14 @@ class _PriceRowState extends State<PriceRow> {
           flex: 6,
           child: TextFieldCustom(
             decoration: InputDecoration(hintText: "Название"),
-            controller: unitsController..text = widget.price.name ?? "",
+            controller: nameController..text = widget.price.name ?? "",
+            onTapOutside: () {
+              _priceBloc.add(
+                SavePrice(
+                  price: widget.price.copyWith(name: nameController.text),
+                ),
+              );
+            },
           ),
         ),
         Expanded(
@@ -46,6 +53,13 @@ class _PriceRowState extends State<PriceRow> {
             textAlign: TextAlign.center,
             decoration: InputDecoration(hintText: "(шт.)"),
             controller: unitsController..text = widget.price.units ?? "",
+            onTapOutside: () {
+              _priceBloc.add(
+                SavePrice(
+                  price: widget.price.copyWith(units: unitsController.text),
+                ),
+              );
+            },
           ),
         ),
         Expanded(
@@ -59,6 +73,22 @@ class _PriceRowState extends State<PriceRow> {
                   controller:
                       priceController
                         ..text = widget.price.defaultPrice.toString(),
+                  keyboardType: TextInputType.number,
+                  onTapOutside: () {
+                    try {
+                      _priceBloc.add(
+                        SavePrice(
+                          price: widget.price.copyWith(
+                            defaultPrice: double.parse(priceController.text),
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      if (Exception is FormatException) {
+                        debugPrint("Ошибка при форматировании числа");
+                      }
+                    }
+                  },
                 ),
               ),
               Text("₽", style: TextStyle(fontSize: 18)),
@@ -97,3 +127,29 @@ class _PriceRowState extends State<PriceRow> {
     );
   }
 }
+
+// class TextFieldCustomSaving extends TextFieldCustom {
+//   const TextFieldCustomSaving({
+//     super.key,
+//     super.controller,
+//     super.decoration,
+//     super.keyboardType,
+//     super.onTapOutside,
+//     super.style,
+//     super.textAlign,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFieldCustom(
+//       controller: controller,
+//       decoration: decoration,
+//       keyboardType: keyboardType,
+//       onTapOutside: () {
+
+//       },
+//       style: style,
+//       textAlign: textAlign,
+//     );
+//   }
+// }

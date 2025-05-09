@@ -6,10 +6,10 @@ final class LoadPrices extends PriceEvent {}
 
 final class AddPrice extends PriceEvent {}
 
-final class SavePrices extends PriceEvent {
-  SavePrices({required this.pricesId});
+final class SavePrice extends PriceEvent {
+  SavePrice({required this.price});
 
-  final List<String> pricesId;
+  final Price price;
 }
 
 final class RemovePrice extends PriceEvent {

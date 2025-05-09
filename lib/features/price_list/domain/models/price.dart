@@ -12,13 +12,14 @@ class Price {
     this.defaultPrice = 0,
     this.units,
     this.conditions = const [],
+    required this.createdAt,
   });
 
-  /// Название товара (предмета подсчёта)
+  /// Уникальный ID цены
   @HiveField(0)
   final String uuid;
 
-  /// Название товара (предмета подсчёта)
+  /// Название цены (предмета подсчёта)
   @HiveField(1)
   final String? name;
 
@@ -33,4 +34,22 @@ class Price {
   /// Список условий расценки
   @HiveField(4)
   final List<Condition> conditions;
+
+  /// Дата создания цены
+  @HiveField(5)
+  final DateTime createdAt;
+
+  Price copyWith({
+    String? name,
+    double? defaultPrice,
+    String? units,
+    List<Condition>? conditions,
+  }) => Price(
+    uuid: uuid,
+    name: name ?? this.name,
+    defaultPrice: defaultPrice ?? this.defaultPrice,
+    units: units ?? this.units,
+    conditions: conditions ?? this.conditions,
+    createdAt: createdAt,
+  );
 }

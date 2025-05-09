@@ -12,9 +12,11 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
       try {
         emit(PriceLoading());
 
-        final pricesBox = Hive.box<Price>('prices');
+        final prices =
+            Hive.box<Price>('prices').values.toList()
+              ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
-        emit(PriceLoaded(prices: pricesBox.values.toList()));
+        emit(PriceLoaded(prices: prices));
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }
@@ -25,9 +27,15 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
 
         final pricesBox = Hive.box<Price>('prices');
         var uuid = Uuid().v4();
-        pricesBox.put(uuid, Price(uuid: uuid));
+        pricesBox.put(uuid, Price(uuid: uuid, createdAt: DateTime.now()));
 
-        emit(PriceLoaded(prices: pricesBox.values.toList()));
+        emit(
+          PriceLoaded(
+            prices:
+                pricesBox.values.toList()
+                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
+          ),
+        );
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }
@@ -39,7 +47,31 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
         final pricesBox = Hive.box<Price>('prices');
         pricesBox.delete(event.uuid);
 
-        emit(PriceLoaded(prices: pricesBox.values.toList()));
+        emit(
+          PriceLoaded(
+            prices:
+                pricesBox.values.toList()
+                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
+          ),
+        );
+      } catch (e) {
+        emit(PriceError(prices: state.prices));
+      }
+    });
+    on<SavePrice>((event, emit) {
+      try {
+        emit(PriceLoading());
+
+        final pricesBox = Hive.box<Price>('prices');
+        pricesBox.put(event.price.uuid, event.price);
+
+        emit(
+          PriceLoaded(
+            prices:
+                pricesBox.values.toList()
+                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
+          ),
+        );
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }

@@ -14,7 +14,7 @@ class NoPricesBanner extends StatelessWidget {
           spacing: 24,
           children: [
             Text(
-              "Вы пока не добавили ни одного товара",
+              "Вы пока не добавили ни одной расценки",
               style: theme.textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
