@@ -78,7 +78,7 @@ class _PriceListScreenState extends State<PriceListScreen> {
                         state is ItemsLoading
                             ? null
                             : () {
-                              _itemsBloc.add(ItemsAdd(item: Price()));
+                              _itemsBloc.add(ItemsAdd(item: Item()));
                             },
                     isLoading: state is ItemsLoading,
                     text: "Добавить",
