@@ -4,7 +4,7 @@ class TextFieldCustom extends StatelessWidget {
   const TextFieldCustom({
     super.key,
     this.controller,
-    this.decoration,
+    this.decoration = const InputDecoration(),
     this.style,
     this.textAlign = TextAlign.start,
     this.keyboardType,
@@ -21,6 +21,7 @@ class TextFieldCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      groupId: UniqueKey(),
       style: style ?? TextStyle(fontSize: 16),
       decoration: decoration,
       controller: controller,
@@ -28,6 +29,7 @@ class TextFieldCustom extends StatelessWidget {
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
         if (onTapOutside != null) onTapOutside!();
+        debugPrint("=================");
       },
       keyboardType: keyboardType,
     );

@@ -30,8 +30,16 @@ class HomeScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text("Калькулятор"),
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+            title: Text(
+              "Калькулятор",
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            actions: [
+              IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+            ],
           ),
           SliverToBoxAdapter(child: SizedBox(height: 24)),
           SliverPadding(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pricecalc/features/price_list/price_list.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({
@@ -25,6 +27,7 @@ class _RootScreenState extends State<RootScreen> {
     _controller = PageController(
       initialPage: widget.navigationShell.currentIndex,
     );
+    context.read<PriceBloc>().add(LoadPrices());
   }
 
   @override

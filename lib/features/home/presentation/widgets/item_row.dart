@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/home/presentation/widgets/name_box.dart';
 
 class ItemRow extends StatelessWidget {
   ItemRow({super.key, this.index});
@@ -9,58 +10,26 @@ class ItemRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
-      spacing: 8,
+      spacing: 6,
       children: [
         index != null
-            ? ReorderableDragStartListener(
-              index: index!,
-              child: _buildNameBox(),
-            )
-            : _buildNameBox(),
+            ? ReorderableDragStartListener(index: index!, child: NameBox())
+            : NameBox(),
         Icon(Icons.close),
         Flexible(
           child: TextFieldCustom(
             textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
             controller: countController,
           ),
         ),
-        Text("шт.", style: TextStyle(fontSize: 16)),
+        Text("шт.", style: theme.textTheme.bodyLarge),
         Icon(Icons.drag_handle),
-        Text(
-          "60 ₽",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        Text("60 ₽", style: theme.textTheme.titleLarge?.copyWith()),
       ],
-    );
-  }
-
-  Material _buildNameBox() {
-    return Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () {},
-        child: Ink(
-          height: 60,
-          width: 160,
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            // boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8)],
-          ),
-          child: Center(
-            child: Text(
-              "Какой-то товар",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

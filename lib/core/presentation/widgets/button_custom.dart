@@ -39,8 +39,16 @@ class ButtonCustom extends StatelessWidget {
             child: Row(
               spacing: icon != null ? 6 : 0,
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(text, style: TextStyle(color: Colors.white, fontSize: 16)),
+                Text(
+                  text,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 icon != null
                     ? Icon(icon, color: Colors.white)
                     : SizedBox.shrink(),

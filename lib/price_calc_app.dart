@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/routing/router.dart';
 
@@ -19,6 +20,7 @@ class PriceCalcApp extends StatelessWidget {
             seedColor: primaryColor,
             primary: primaryColor,
           ),
+          textTheme: GoogleFonts.montserratTextTheme(),
         ),
         routerConfig: router,
       ),

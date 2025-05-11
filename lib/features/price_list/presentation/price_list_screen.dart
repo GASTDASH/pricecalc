@@ -25,12 +25,6 @@ class _PriceListScreenState extends State<PriceListScreen> {
     return BlocBuilder<PriceBloc, PriceState>(
       builder: (context, state) {
         return Scaffold(
-          persistentFooterButtons: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ButtonCustom(text: "Сохранить", onTap: null),
-            ),
-          ],
           body: CustomScrollView(
             slivers:
                 state is PriceLoading
