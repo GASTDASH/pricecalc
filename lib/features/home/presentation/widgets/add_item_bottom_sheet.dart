@@ -22,7 +22,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
       builder: (context, state) {
         return DraggableScrollableSheet(
           initialChildSize: 1,
-          minChildSize: 0.25,
+          minChildSize: 0.5,
           maxChildSize: 1,
           builder: (context, controller) {
             return BottomSheetCustom(

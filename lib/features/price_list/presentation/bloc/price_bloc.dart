@@ -1,20 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
-import 'package:uuid/uuid.dart';
 
 part 'price_event.dart';
 part 'price_state.dart';
 
 class PriceBloc extends Bloc<PriceEvent, PriceState> {
-  PriceBloc() : super(PriceLoaded()) {
+  final PriceRepository priceRepository;
+
+  PriceBloc(this.priceRepository) : super(PriceLoaded()) {
     on<LoadPrices>((event, emit) async {
       try {
         emit(PriceLoading());
 
-        final prices =
-            Hive.box<Price>('prices').values.toList()
-              ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+        final prices = await priceRepository.getPrices();
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
@@ -25,17 +23,10 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
       try {
         emit(PriceLoading());
 
-        final pricesBox = Hive.box<Price>('prices');
-        var uuid = Uuid().v4();
-        pricesBox.put(uuid, Price(uuid: uuid, createdAt: DateTime.now()));
+        await priceRepository.addPrice();
+        final prices = await priceRepository.getPrices();
 
-        emit(
-          PriceLoaded(
-            prices:
-                pricesBox.values.toList()
-                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
-          ),
-        );
+        emit(PriceLoaded(prices: prices));
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }
@@ -44,34 +35,22 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
       try {
         emit(PriceLoading());
 
-        final pricesBox = Hive.box<Price>('prices');
-        pricesBox.delete(event.uuid);
+        await priceRepository.removePrice(event.uuid);
+        final prices = await priceRepository.getPrices();
 
-        emit(
-          PriceLoaded(
-            prices:
-                pricesBox.values.toList()
-                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
-          ),
-        );
+        emit(PriceLoaded(prices: prices));
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }
     });
-    on<SavePrice>((event, emit) {
+    on<SavePrice>((event, emit) async {
       try {
         emit(PriceLoading());
 
-        final pricesBox = Hive.box<Price>('prices');
-        pricesBox.put(event.price.uuid, event.price);
+        await priceRepository.updatePrice(event.price);
+        final prices = await priceRepository.getPrices();
 
-        emit(
-          PriceLoaded(
-            prices:
-                pricesBox.values.toList()
-                  ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
-          ),
-        );
+        emit(PriceLoaded(prices: prices));
       } catch (e) {
         emit(PriceError(prices: state.prices));
       }
