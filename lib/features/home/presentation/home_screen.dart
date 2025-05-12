@@ -1,76 +1,190 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/home/home.dart';
+import 'package:pricecalc/features/price_list/price_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final HomeBloc _homeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _homeBloc = HomeBloc(
+      calcItemRepository: GetIt.I<CalcItemRepository>(),
+      priceBloc: context.read<PriceBloc>(),
+    )..add(LoadCalcItems());
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      persistentFooterButtons: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Итого:", style: theme.textTheme.headlineSmall),
-              Text(
-                "1288 ₽",
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+    return BlocProvider(
+      create: (context) => _homeBloc,
+      child: Scaffold(
+        persistentFooterButtons: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Итого:", style: theme.textTheme.headlineSmall),
+                BlocBuilder<HomeBloc, HomeState>(
+                  bloc: _homeBloc,
+                  builder: (context, state) {
+                    return Text(
+                      (state is HomeLoaded && state.calcItems.isNotEmpty)
+                          ? "${state.calcItems.fold<double>(0, (sum, calcItem) => sum + calcItem.price.defaultPrice * calcItem.quantity)} ₽"
+                          : "0 ₽",
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ],
-          ),
-        ),
-      ],
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text(
-              "Калькулятор",
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-            ],
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 24)),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            sliver: SliverReorderableList(
-              itemCount: 4,
-              itemBuilder:
-                  (context, i) => Padding(
-                    key: ValueKey(i),
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: ItemRow(index: i),
-                  ),
-              onReorder: (oldIndex, newIndex) => () {},
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: ButtonCustom(
-                onTap: () {
-                  showModalBottomSheetCustom(
-                    context: context,
-                    builder: (context) => AddItemBottomSheet(),
-                  );
-                },
-                text: "Добавить",
-                icon: Icons.add,
-              ),
+              ],
             ),
           ),
         ],
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Text(
+                "Калькулятор",
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined)),
+                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+              ],
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 24)),
+            BlocBuilder<HomeBloc, HomeState>(
+              bloc: _homeBloc,
+              builder: (context, state) {
+                if (state is HomeLoaded) {
+                  if (state.calcItems.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          spacing: 12,
+                          children: [
+                            Text(
+                              "Добавьте свой первый предмет для подсчёта",
+                              style: theme.textTheme.headlineMedium,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text("Создать прайс можно на втором экране"),
+                            Icon(Icons.arrow_downward_rounded, size: 64),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      sliver: SliverReorderableList(
+                        itemCount: state.calcItems.length,
+                        itemBuilder:
+                            (context, i) => Padding(
+                              key: ValueKey(i),
+                              padding: const EdgeInsets.only(bottom: 24),
+                              child: CalcItemRow(
+                                calcItem: state.calcItems[i],
+                                index: i,
+                              ),
+                            ),
+                        onReorder: (oldIndex, newIndex) => () {},
+                      ),
+                    );
+                  }
+                } else if (state is HomeLoading) {
+                  return SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (state is HomeError) {
+                  // TODO: Сделать глобальный экран для ошибки
+                  return SliverToBoxAdapter(
+                    child: Center(child: Icon(Icons.warning_amber)),
+                  );
+                }
+                return SliverToBoxAdapter(
+                  child: Center(child: Text("HomeBloc: Неизвестное состояние")),
+                );
+              },
+            ),
+            BlocBuilder<PriceBloc, PriceState>(
+              builder: (context, state) {
+                return SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: ButtonCustom(
+                      onTap: () async {
+                        if (state is PriceLoaded) {
+                          final Price? price = await showModalBottomSheetCustom(
+                            context: context,
+                            builder:
+                                (context) =>
+                                    AddItemBottomSheet(prices: state.prices),
+                          );
+
+                          if (price != null) {
+                            _homeBloc.add(AddCalcItem(price: price));
+                          }
+                        } else if (state is PriceLoading) {
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Прайс ещё загружается")),
+                          );
+                        }
+                      },
+                      text: "Добавить",
+                      icon: Icons.add,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SliverFillRemaining(
+              child: BlocBuilder<HomeBloc, HomeState>(
+                bloc: _homeBloc,
+                builder: (context, state) {
+                  if (state is HomeLoaded && state.calcItems.isNotEmpty) {
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          "Сдвиньте предмет вправо, чтобы удалить его",
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.hintColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

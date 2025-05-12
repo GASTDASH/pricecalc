@@ -9,6 +9,7 @@ class TextFieldCustom extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.keyboardType,
     this.onTapOutside,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -17,6 +18,7 @@ class TextFieldCustom extends StatelessWidget {
   final TextAlign textAlign;
   final TextInputType? keyboardType;
   final void Function()? onTapOutside;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class TextFieldCustom extends StatelessWidget {
       decoration: decoration,
       controller: controller,
       textAlign: textAlign,
+      onChanged: onChanged,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
         if (onTapOutside != null) onTapOutside!();

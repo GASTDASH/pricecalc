@@ -3,7 +3,7 @@ import 'package:pricecalc/features/price_list/price_list.dart';
 
 part 'price.g.dart';
 
-/// Объект, описывающий предмет подсчёта. Подсчёт идёт по цене по умолчанию **[defaultPrice]** и цене, описанной в условиях **[conditions]**
+/// Объект, описывающий цену предмета подсчёта. Подсчёт идёт по цене по умолчанию **[defaultPrice]** и цене, описанной в условиях **[conditions]**
 @HiveType(typeId: 0)
 class Price {
   Price({

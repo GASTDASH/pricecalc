@@ -15,5 +15,7 @@ final class PriceLoaded extends PriceState {
 }
 
 final class PriceError extends PriceState {
-  PriceError({super.prices});
+  PriceError({super.prices, this.error});
+
+  final Object? error;
 }

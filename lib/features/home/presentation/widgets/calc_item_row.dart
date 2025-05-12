@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/home/home.dart';
+
+class CalcItemRow extends StatefulWidget {
+  const CalcItemRow({super.key, this.index, required this.calcItem});
+
+  final int? index;
+  final CalcItem calcItem;
+
+  @override
+  State<CalcItemRow> createState() => _CalcItemRowState();
+}
+
+class _CalcItemRowState extends State<CalcItemRow> {
+  final quantityController = TextEditingController(text: "1");
+
+  late final HomeBloc _homeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _homeBloc = context.read<HomeBloc>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Dismissible(
+      key: ValueKey(widget.calcItem.uuid),
+      direction: DismissDirection.endToStart,
+      onDismissed:
+          (_) => _homeBloc.add(RemoveCalcItem(uuid: widget.calcItem.uuid)),
+      background: Container(
+        color: theme.hintColor.withValues(alpha: 0.1),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            spacing: 12,
+            children: [Text("Удалить"), Icon(Icons.delete_outline)],
+          ),
+        ),
+      ),
+      child: Row(
+        spacing: 6,
+        children: [
+          widget.index != null
+              ? ReorderableDragStartListener(
+                index: widget.index!,
+                child: NameBox(
+                  name: widget.calcItem.price.name ?? "Без названия",
+                ),
+              )
+              : NameBox(name: widget.calcItem.price.name ?? "Без названия"),
+          Icon(Icons.close),
+          Flexible(
+            child: TextFieldCustom(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              controller: quantityController,
+              onChanged: (_) {
+                try {
+                  _homeBloc.add(
+                    SaveCalcItem(
+                      calcItem: widget.calcItem.copyWith(
+                        quantity: double.parse(quantityController.text),
+                      ),
+                    ),
+                  );
+                } catch (e) {
+                  if (Exception is FormatException) {
+                    debugPrint("Ошибка при форматировании числа");
+                  }
+                }
+              },
+            ),
+          ),
+          Text(
+            widget.calcItem.price.units ?? "шт.",
+            style: theme.textTheme.bodyLarge,
+          ),
+          Icon(Icons.drag_handle),
+          Text(
+            "${widget.calcItem.price.defaultPrice * widget.calcItem.quantity} ₽",
+            style: theme.textTheme.titleLarge?.copyWith(),
+          ),
+        ],
+      ),
+    );
+  }
+}

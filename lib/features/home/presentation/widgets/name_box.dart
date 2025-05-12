@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NameBox extends StatelessWidget {
-  const NameBox({super.key});
+  const NameBox({super.key, required this.name});
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class NameBox extends StatelessWidget {
         onTap: () {},
         child: Ink(
           height: 60,
-          width: 160,
+          width: 140,
           padding: EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -22,7 +24,7 @@ class NameBox extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              "Какой-то товар",
+              name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 16),

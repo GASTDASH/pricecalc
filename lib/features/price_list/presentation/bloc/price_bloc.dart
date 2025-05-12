@@ -5,26 +5,26 @@ part 'price_event.dart';
 part 'price_state.dart';
 
 class PriceBloc extends Bloc<PriceEvent, PriceState> {
-  final PriceRepository priceRepository;
+  final PriceRepository _priceRepository;
 
-  PriceBloc(this.priceRepository) : super(PriceLoaded()) {
+  PriceBloc(this._priceRepository) : super(PriceLoaded()) {
     on<LoadPrices>((event, emit) async {
       try {
         emit(PriceLoading());
 
-        final prices = await priceRepository.getPrices();
+        final prices = await _priceRepository.getPrices();
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
-        emit(PriceError(prices: state.prices));
+        emit(PriceError(error: e, prices: state.prices));
       }
     });
     on<AddPrice>((event, emit) async {
       try {
         emit(PriceLoading());
 
-        await priceRepository.addPrice();
-        final prices = await priceRepository.getPrices();
+        await _priceRepository.addPrice();
+        final prices = await _priceRepository.getPrices();
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
@@ -35,8 +35,8 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
       try {
         emit(PriceLoading());
 
-        await priceRepository.removePrice(event.uuid);
-        final prices = await priceRepository.getPrices();
+        await _priceRepository.removePrice(event.uuid);
+        final prices = await _priceRepository.getPrices();
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
@@ -47,8 +47,8 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
       try {
         emit(PriceLoading());
 
-        await priceRepository.updatePrice(event.price);
-        final prices = await priceRepository.getPrices();
+        await _priceRepository.updatePrice(event.price);
+        final prices = await _priceRepository.getPrices();
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
