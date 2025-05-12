@@ -117,9 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else if (state is HomeError) {
-                  // TODO: Сделать глобальный экран для ошибки
                   return SliverToBoxAdapter(
-                    child: Center(child: Icon(Icons.warning_amber)),
+                    child: ErrorBanner(error: state.error.toString()),
                   );
                 }
                 return SliverToBoxAdapter(

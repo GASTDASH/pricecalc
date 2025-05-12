@@ -29,6 +29,8 @@ class _PriceListScreenState extends State<PriceListScreen> {
             slivers:
                 state is PriceLoading
                     ? [SliverFillRemaining(child: CircularProgressIndicator())]
+                    : state is PriceError
+                    ? [SliverToBoxAdapter(child: ErrorBanner())]
                     : [
                       SliverAppBar(title: Text("Прайс-лист")),
                       SliverToBoxAdapter(child: SizedBox(height: 24)),
