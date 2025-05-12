@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Text(
-                          "Сдвиньте предмет вправо, чтобы удалить его",
+                          "Сдвиньте предмет влево, чтобы удалить его",
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.hintColor,
