@@ -42,14 +42,16 @@ class EditConditionsBottomSheet extends StatelessWidget {
                     );
                   },
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.read<ConditionRepository>().addCondition();
-                  },
-                  child: Row(
-                    spacing: 6,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text("Добавить условие"), Icon(Icons.add)],
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      context.read<ConditionRepository>().addCondition();
+                    },
+                    child: Row(
+                      spacing: 6,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [Text("Добавить условие"), Icon(Icons.add)],
+                    ),
                   ),
                 ),
                 Expanded(

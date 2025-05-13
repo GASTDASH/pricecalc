@@ -17,4 +17,10 @@ class ConditionRepository extends ChangeNotifier {
     _value.remove(condition);
     notifyListeners();
   }
+
+  void updateCondition(Condition condition) {
+    int index = _value.indexWhere((c) => c.uuid == condition.uuid);
+
+    _value[index] = condition;
+  }
 }

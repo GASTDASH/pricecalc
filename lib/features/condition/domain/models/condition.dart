@@ -6,10 +6,11 @@ part 'condition.g.dart';
 @HiveType(typeId: 1)
 class Condition extends HiveObject {
   Condition({required this.uuid, this.from, this.to, this.price})
-    : assert(
-        (from ?? 0) < (to ?? 1),
-        "Начальное количество не может быть больше конечного",
-      );
+  // : assert(
+  //     (from ?? 0) < (to ?? 1),
+  //     "Начальное количество не может быть больше конечного",
+  //   )
+  ;
 
   /// Уникальный идентификатор
   @HiveField(0)
@@ -26,4 +27,13 @@ class Condition extends HiveObject {
   /// Новая стоимость для условия
   @HiveField(3)
   final double? price;
+
+  Condition copyWith({double? from, double? to, double? price}) {
+    return Condition(
+      uuid: uuid,
+      from: from ?? this.from,
+      to: to ?? this.to,
+      price: price ?? this.price,
+    );
+  }
 }

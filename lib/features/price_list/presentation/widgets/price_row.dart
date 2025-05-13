@@ -100,7 +100,7 @@ class _PriceRowState extends State<PriceRow> {
           children: [
             IconButton(
               onPressed: () async {
-                final List<Condition> conditions =
+                final List<Condition>? conditions =
                     await showModalBottomSheetCustom(
                       context: context,
                       builder:
@@ -110,11 +110,13 @@ class _PriceRowState extends State<PriceRow> {
                           ),
                     );
 
-                _priceBloc.add(
-                  SavePrice(
-                    price: widget.price.copyWith(conditions: conditions),
-                  ),
-                );
+                if (conditions != null) {
+                  _priceBloc.add(
+                    SavePrice(
+                      price: widget.price.copyWith(conditions: conditions),
+                    ),
+                  );
+                }
               },
               icon:
                   widget.price.conditions.isNotEmpty
