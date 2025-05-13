@@ -17,7 +17,7 @@ class _PriceListScreenState extends State<PriceListScreen> {
   void initState() {
     super.initState();
 
-    _priceBloc = context.read<PriceBloc>()..add(LoadPrices());
+    _priceBloc = BlocProvider.of<PriceBloc>(context)..add(LoadPrices());
   }
 
   @override

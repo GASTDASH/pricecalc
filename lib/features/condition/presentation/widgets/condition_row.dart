@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pricecalc/features/condition/condition.dart';
+import 'package:provider/provider.dart';
 
 class ConditionRow extends StatelessWidget {
-  const ConditionRow({super.key});
+  const ConditionRow({super.key, required this.condition});
+
+  final Condition condition;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,12 @@ class ConditionRow extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+        IconButton(
+          onPressed: () {
+            context.read<ConditionRepository>().removeCondition(condition);
+          },
+          icon: Icon(Icons.delete),
+        ),
       ],
     );
   }

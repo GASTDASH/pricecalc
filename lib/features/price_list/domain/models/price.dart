@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pricecalc/features/price_list/price_list.dart';
+import 'package:pricecalc/features/condition/condition.dart';
 
 part 'price.g.dart';
 

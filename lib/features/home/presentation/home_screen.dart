@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _homeBloc = HomeBloc(
       calcItemRepository: GetIt.I<CalcItemRepository>(),
-      priceBloc: context.read<PriceBloc>(),
+      priceBloc: BlocProvider.of<PriceBloc>(context),
     )..add(LoadCalcItems());
   }
 

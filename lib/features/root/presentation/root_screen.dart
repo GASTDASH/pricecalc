@@ -27,7 +27,7 @@ class _RootScreenState extends State<RootScreen> {
     _controller = PageController(
       initialPage: widget.navigationShell.currentIndex,
     );
-    context.read<PriceBloc>().add(LoadPrices());
+    BlocProvider.of<PriceBloc>(context).add(LoadPrices());
   }
 
   @override

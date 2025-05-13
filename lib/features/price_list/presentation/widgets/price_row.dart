@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/condition/condition.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
 class PriceRow extends StatefulWidget {
@@ -23,7 +24,7 @@ class _PriceRowState extends State<PriceRow> {
   void initState() {
     super.initState();
 
-    _priceBloc = context.read<PriceBloc>();
+    _priceBloc = BlocProvider.of<PriceBloc>(context);
   }
 
   @override
@@ -102,7 +103,12 @@ class _PriceRowState extends State<PriceRow> {
                   () => {
                     showModalBottomSheetCustom(
                       context: context,
-                      builder: (context) => EditConditionsBottomSheet(),
+                      builder:
+                          (context) => EditConditionsBottomSheet(
+                            conditions: [
+                              // TODO: Передать список условий
+                            ],
+                          ),
                     ),
                   },
               icon:

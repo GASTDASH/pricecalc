@@ -17,21 +17,24 @@ class ConditionAdapter extends TypeAdapter<Condition> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Condition(
-      from: fields[0] as double,
-      to: fields[1] as double,
-      price: fields[2] as double,
+      uuid: fields[0] as String,
+      from: fields[1] as double?,
+      to: fields[2] as double?,
+      price: fields[3] as double?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Condition obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.from)
+      ..write(obj.uuid)
       ..writeByte(1)
-      ..write(obj.to)
+      ..write(obj.from)
       ..writeByte(2)
+      ..write(obj.to)
+      ..writeByte(3)
       ..write(obj.price);
   }
 
