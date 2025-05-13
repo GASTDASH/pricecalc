@@ -147,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                 } else if (state is HomeLoading) {
-                  return SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
+                  return SliverToBoxAdapter(child: LoadingBanner());
                 } else if (state is HomeError) {
                   return SliverToBoxAdapter(
                     child: ErrorBanner(error: state.error.toString()),

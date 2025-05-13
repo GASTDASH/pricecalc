@@ -28,7 +28,7 @@ class _PriceListScreenState extends State<PriceListScreen> {
           body: CustomScrollView(
             slivers:
                 state is PriceLoading
-                    ? [SliverFillRemaining(child: CircularProgressIndicator())]
+                    ? [SliverFillRemaining(child: LoadingBanner())]
                     : state is PriceError
                     ? [SliverToBoxAdapter(child: ErrorBanner())]
                     : [

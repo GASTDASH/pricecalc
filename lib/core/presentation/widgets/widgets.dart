@@ -5,4 +5,5 @@
 export 'bottom_sheet_custom.dart';
 export 'button_custom.dart';
 export 'error_banner.dart';
+export 'loading_banner.dart';
 export 'text_field_custom.dart';

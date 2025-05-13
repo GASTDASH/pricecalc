@@ -47,6 +47,7 @@ dependencies:
   talker_bloc_logger: ^4.7.6
   sliver_tools: ^0.2.12
   provider: ^6.1.5
+  loading_indicator: ^3.1.1
 
 dev_dependencies:
   flutter_test:
