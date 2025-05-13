@@ -13,16 +13,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PriceBloc _priceBloc;
   late StreamSubscription _priceSubscription;
 
+  @override
+  Future<void> close() {
+    _priceSubscription.cancel();
+    return super.close();
+  }
+
   HomeBloc({
     required CalcItemRepository calcItemRepository,
     required PriceBloc priceBloc,
   }) : _calcItemRepository = calcItemRepository,
        _priceBloc = priceBloc,
        super(HomeLoaded()) {
-    _priceSubscription = priceBloc.stream.listen((state) {
+    // УРА Я ЭТО СДЕЛАЛ
+    _priceSubscription = _priceBloc.stream.listen((state) async {
       if (state is PriceLoaded) {
-        //TODO: Обновить нужные записи в Box'е
-        //TODO: Заменить Price на UUID прайса
+        // Обновление нужных записи в Box'е
+        final calcItems = await _calcItemRepository.getCalcItems();
+        for (var price in state.prices) {
+          for (var calcItem in calcItems) {
+            if (price.uuid == calcItem.price.uuid) {
+              await _calcItemRepository.updateCalcItem(
+                calcItem.copyWith(price: price),
+              );
+            }
+          }
+        }
+
+        add(LoadCalcItems());
       }
     });
 
