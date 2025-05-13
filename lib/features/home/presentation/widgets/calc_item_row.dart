@@ -59,7 +59,11 @@ class _CalcItemRowState extends State<CalcItemRow> {
               ? ReorderableDragStartListener(
                 index: widget.index!,
                 child: NameBox(
-                  name: widget.calcItem.price.name ?? "Без названия",
+                  name:
+                      widget.calcItem.price.name == null ||
+                              widget.calcItem.price.name == ""
+                          ? "Без названия"
+                          : widget.calcItem.price.name!,
                 ),
               )
               : NameBox(name: widget.calcItem.price.name ?? "Без названия"),
