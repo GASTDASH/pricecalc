@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pricecalc/features/home/presentation/home_screen.dart';
-import 'package:pricecalc/features/price_list/presentation/price_list_screen.dart';
-import 'package:pricecalc/features/root/presentation/root_screen.dart';
-import 'package:pricecalc/features/settings/presentation/settings_screen.dart';
+import 'package:pricecalc/features/home/home.dart';
+import 'package:pricecalc/features/price_list/price_list.dart';
+import 'package:pricecalc/features/root/root.dart';
+import 'package:pricecalc/features/settings/settings.dart';
 
 CustomTransitionPage buildPageWithDefaultTransition<T>({
   required BuildContext context,
