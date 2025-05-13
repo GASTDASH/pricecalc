@@ -10,6 +10,7 @@ class LoadingBanner extends StatelessWidget {
 
     return Column(
       spacing: 8,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: SizedBox(
