@@ -8,7 +8,7 @@ part 'price.g.dart';
 class Price {
   Price({
     required this.uuid,
-    this.name,
+    this.name = "",
     this.defaultPrice = 0,
     this.units,
     this.conditions = const [],

@@ -22,7 +22,9 @@ class ItemChip extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            price.name ?? "Без названия",
+            price.name == null || price.name == ""
+                ? "Без названия"
+                : price.name!,
             style: TextStyle(fontSize: 16),
           ),
         ),

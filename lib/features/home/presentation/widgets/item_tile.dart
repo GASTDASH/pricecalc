@@ -14,7 +14,7 @@ class ItemTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       title: Text(
-        price.name ?? "Без названия",
+        price.name == null || price.name == "" ? "Без названия" : price.name!,
         style: theme.textTheme.titleLarge,
       ),
       subtitle: Text(
