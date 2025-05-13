@@ -21,7 +21,17 @@ class CalcItemRow extends StatefulWidget {
 }
 
 class _CalcItemRowState extends State<CalcItemRow> {
-  final quantityController = TextEditingController(text: "1");
+  final quantityController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    quantityController.text =
+        (widget.calcItem.quantity % 1 == 0)
+            ? widget.calcItem.quantity.truncate().toString()
+            : widget.calcItem.quantity.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
