@@ -3,7 +3,7 @@ import 'package:pricecalc/features/condition/condition.dart';
 import 'package:uuid/uuid.dart';
 
 class ConditionRepository extends ChangeNotifier {
-  ConditionRepository.instance(List<Condition> value) : _value = value;
+  ConditionRepository(List<Condition> value) : _value = value;
 
   final List<Condition> _value;
   List<Condition> get value => _value;

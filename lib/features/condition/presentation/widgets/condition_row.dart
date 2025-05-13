@@ -3,9 +3,10 @@ import 'package:pricecalc/features/condition/condition.dart';
 import 'package:provider/provider.dart';
 
 class ConditionRow extends StatelessWidget {
-  const ConditionRow({super.key, required this.condition});
+  const ConditionRow({super.key, required this.condition, required this.units});
 
   final Condition condition;
+  final String units;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ConditionRow extends StatelessWidget {
             decoration: InputDecoration(hintText: "От"),
           ),
         ),
-        Text("шт."),
+        Text(units),
         Icon(Icons.arrow_right_alt),
         Expanded(
           flex: 5,
@@ -30,7 +31,7 @@ class ConditionRow extends StatelessWidget {
             decoration: InputDecoration(hintText: "До"),
           ),
         ),
-        Text("шт."),
+        Text(units),
         Icon(Icons.drag_handle),
         Expanded(
           flex: 5,

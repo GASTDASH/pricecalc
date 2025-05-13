@@ -48,7 +48,7 @@ class _PriceListScreenState extends State<PriceListScreen> {
                                   )
                                   : state.prices.isEmpty
                                   ? NoPricesBanner()
-                                  : Center(child: CircularProgressIndicator()),
+                                  : Center(child: Text("Что-то пошло не так!")),
                         ),
                       ),
                       SliverToBoxAdapter(child: SizedBox(height: 24)),

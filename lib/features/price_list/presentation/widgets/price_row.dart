@@ -99,18 +99,23 @@ class _PriceRowState extends State<PriceRow> {
         Row(
           children: [
             IconButton(
-              onPressed:
-                  () => {
-                    showModalBottomSheetCustom(
+              onPressed: () async {
+                final List<Condition> conditions =
+                    await showModalBottomSheetCustom(
                       context: context,
                       builder:
                           (context) => EditConditionsBottomSheet(
-                            conditions: [
-                              // TODO: Передать список условий
-                            ],
+                            conditions: widget.price.conditions.toList(),
+                            units: widget.price.units ?? "шт.",
                           ),
-                    ),
-                  },
+                    );
+
+                _priceBloc.add(
+                  SavePrice(
+                    price: widget.price.copyWith(conditions: conditions),
+                  ),
+                );
+              },
               icon:
                   widget.price.conditions.isNotEmpty
                       ? Badge(

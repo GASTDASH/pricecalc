@@ -3,32 +3,22 @@ import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/condition/condition.dart';
 import 'package:provider/provider.dart';
 
-class EditConditionsBottomSheet extends StatefulWidget {
-  const EditConditionsBottomSheet({super.key, required this.conditions});
+class EditConditionsBottomSheet extends StatelessWidget {
+  const EditConditionsBottomSheet({
+    super.key,
+    required this.conditions,
+    required this.units,
+  });
 
   final List<Condition> conditions;
-
-  @override
-  State<EditConditionsBottomSheet> createState() =>
-      _EditConditionsBottomSheetState();
-}
-
-class _EditConditionsBottomSheetState extends State<EditConditionsBottomSheet> {
-  late List<Condition> conditions;
-
-  @override
-  void initState() {
-    super.initState();
-
-    conditions = widget.conditions;
-  }
+  final String units;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return ChangeNotifierProvider(
-      create: (_) => ConditionRepository.instance(conditions),
+      create: (_) => ConditionRepository(conditions),
       builder:
           (context, child) => BottomSheetCustom(
             child: Column(
@@ -43,12 +33,13 @@ class _EditConditionsBottomSheetState extends State<EditConditionsBottomSheet> {
                 ),
                 Consumer<ConditionRepository>(
                   builder: (_, repo, _) {
-                    List<ConditionRow> conditionsRows = [];
-                    for (var condition in repo.value) {
-                      conditionsRows.add(ConditionRow(condition: condition));
-                    }
-
-                    return Column(spacing: 16, children: [...conditionsRows]);
+                    return Column(
+                      spacing: 16,
+                      children: [
+                        for (var condition in repo.value)
+                          ConditionRow(condition: condition, units: units),
+                      ],
+                    );
                   },
                 ),
                 TextButton(
