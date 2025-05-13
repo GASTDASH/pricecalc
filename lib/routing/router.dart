@@ -45,6 +45,7 @@ final router = GoRouter(
           ],
         ),
         StatefulShellBranch(
+          preload: true,
           routes: [
             GoRoute(
               path: '/price-list',
