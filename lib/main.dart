@@ -24,6 +24,9 @@ void main() async {
     settings: const TalkerBlocLoggerSettings(
       printStateFullData: true,
       printEventFullData: true,
+      printClosings: true,
+      printChanges: true,
+      printEvents: true,
     ),
   );
 

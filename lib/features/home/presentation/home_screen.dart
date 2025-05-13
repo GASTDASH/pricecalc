@@ -99,15 +99,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       sliver: SliverReorderableList(
                         itemCount: state.calcItems.length,
-                        itemBuilder:
-                            (context, i) => Padding(
-                              key: ValueKey(i),
-                              padding: const EdgeInsets.only(bottom: 24),
+                        itemBuilder: (context, i) {
+                          final calcItem = state.calcItems[i];
+
+                          return Padding(
+                            key: ValueKey(i),
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: BlocProvider(
+                              create: (context) => _homeBloc,
                               child: CalcItemRow(
-                                calcItem: state.calcItems[i],
+                                calcItem: calcItem,
                                 index: i,
+                                onDismissed:
+                                    (_) => _homeBloc.add(
+                                      RemoveCalcItem(uuid: calcItem.uuid),
+                                    ),
+                                onChanged: (text) {
+                                  try {
+                                    _homeBloc.add(
+                                      SaveCalcItem(
+                                        calcItem: calcItem.copyWith(
+                                          quantity: double.parse(text),
+                                        ),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    if (Exception is FormatException) {
+                                      debugPrint(
+                                        "Ошибка при форматировании числа",
+                                      );
+                                    }
+                                  }
+                                },
                               ),
                             ),
+                          );
+                        },
                         onReorder: (oldIndex, newIndex) => () {},
                       ),
                     );

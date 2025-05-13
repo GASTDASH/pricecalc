@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/home/home.dart';
 
 class CalcItemRow extends StatefulWidget {
-  const CalcItemRow({super.key, this.index, required this.calcItem});
+  const CalcItemRow({
+    super.key,
+    this.index,
+    required this.calcItem,
+    this.onDismissed,
+    this.onChanged,
+  });
 
   final int? index;
   final CalcItem calcItem;
+  final void Function(DismissDirection)? onDismissed;
+  final void Function(String)? onChanged;
 
   @override
   State<CalcItemRow> createState() => _CalcItemRowState();
@@ -16,15 +23,6 @@ class CalcItemRow extends StatefulWidget {
 class _CalcItemRowState extends State<CalcItemRow> {
   final quantityController = TextEditingController(text: "1");
 
-  late final HomeBloc _homeBloc;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _homeBloc = context.read<HomeBloc>();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -32,8 +30,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
     return Dismissible(
       key: ValueKey(widget.calcItem.uuid),
       direction: DismissDirection.endToStart,
-      onDismissed:
-          (_) => _homeBloc.add(RemoveCalcItem(uuid: widget.calcItem.uuid)),
+      onDismissed: widget.onDismissed,
       background: Container(
         color: theme.hintColor.withValues(alpha: 0.1),
         child: Padding(
@@ -62,21 +59,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               controller: quantityController,
-              onChanged: (_) {
-                try {
-                  _homeBloc.add(
-                    SaveCalcItem(
-                      calcItem: widget.calcItem.copyWith(
-                        quantity: double.parse(quantityController.text),
-                      ),
-                    ),
-                  );
-                } catch (e) {
-                  if (Exception is FormatException) {
-                    debugPrint("Ошибка при форматировании числа");
-                  }
-                }
-              },
+              onChanged: widget.onChanged,
             ),
           ),
           Text(
