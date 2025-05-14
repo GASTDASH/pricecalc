@@ -39,11 +39,15 @@ class _ConditionRowState extends State<ConditionRow> {
             style: TextStyle(fontSize: 16),
             decoration: InputDecoration(hintText: "От"),
             controller:
-                fromController..text = widget.condition.from?.toString() ?? "",
+                fromController
+                  ..text =
+                      (widget.condition.from == 0)
+                          ? ""
+                          : widget.condition.from.toString(),
             onTapOutside: () {
               try {
                 condition = condition.copyWith(
-                  from: double.parse(fromController.text),
+                  from: double.tryParse(fromController.text) ?? 0,
                 );
                 context.read<ConditionRepository>().updateCondition(condition);
               } catch (e) {
@@ -61,16 +65,16 @@ class _ConditionRowState extends State<ConditionRow> {
             style: TextStyle(fontSize: 16),
             decoration: InputDecoration(hintText: "До"),
             controller:
-                toController..text = widget.condition.to?.toString() ?? "",
+                toController
+                  ..text =
+                      (widget.condition.to == double.infinity)
+                          ? ""
+                          : widget.condition.to.toString(),
             onTapOutside: () {
-              try {
-                condition = condition.copyWith(
-                  to: double.parse(toController.text),
-                );
-                context.read<ConditionRepository>().updateCondition(condition);
-              } catch (e) {
-                debugPrint(e.toString());
-              }
+              condition = condition.copyWith(
+                to: double.tryParse(toController.text) ?? double.infinity,
+              );
+              context.read<ConditionRepository>().updateCondition(condition);
             },
           ),
         ),
@@ -86,19 +90,14 @@ class _ConditionRowState extends State<ConditionRow> {
                   style: TextStyle(fontSize: 16),
                   decoration: InputDecoration(hintText: "0"),
                   controller:
-                      priceController
-                        ..text = widget.condition.price?.toString() ?? "",
+                      priceController..text = widget.condition.price.toString(),
                   onTapOutside: () {
-                    try {
-                      condition = condition.copyWith(
-                        price: double.parse(priceController.text),
-                      );
-                      context.read<ConditionRepository>().updateCondition(
-                        condition,
-                      );
-                    } catch (e) {
-                      debugPrint(e.toString());
-                    }
+                    condition = condition.copyWith(
+                      price: double.tryParse(priceController.text) ?? 0,
+                    );
+                    context.read<ConditionRepository>().updateCondition(
+                      condition,
+                    );
                   },
                 ),
               ),

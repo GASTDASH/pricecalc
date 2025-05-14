@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final HomeBloc _homeBloc;
+  bool sortAlphabetically = false;
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, state) {
                     return Text(
                       (state is HomeLoaded && state.calcItems.isNotEmpty)
-                          ? "${state.calcItems.fold<double>(0, (sum, calcItem) => sum + calcItem.price.defaultPrice * calcItem.quantity)} ₽"
+                          ? "${state.calcItems.fold<double>(0, (sum, calcItem) => sum + calcItem.totalPrice())} ₽"
                           : "0 ₽",
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.w700,
@@ -77,7 +78,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
               ],
             ),
-            SliverToBoxAdapter(child: SizedBox(height: 24)),
+            SliverToBoxAdapter(child: SizedBox(height: 6)),
+            BlocBuilder<HomeBloc, HomeState>(
+              bloc: _homeBloc,
+              builder: (context, state) {
+                return (state.calcItems.isNotEmpty)
+                    ? SliverPadding(
+                      padding: const EdgeInsets.only(left: 16),
+                      sliver: SliverToBoxAdapter(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                sortAlphabetically = !sortAlphabetically;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              spacing: 6,
+                              children: [
+                                Icon(
+                                  sortAlphabetically
+                                      ? Icons.sort_by_alpha
+                                      : Icons.sort,
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    text: "Сортировка: ",
+                                    children: [
+                                      TextSpan(
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        text:
+                                            sortAlphabetically
+                                                ? "По алфавиту"
+                                                : "По умолчанию",
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    : SliverToBoxAdapter(child: SizedBox.shrink());
+              },
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 6)),
             BlocBuilder<HomeBloc, HomeState>(
               bloc: _homeBloc,
               builder: (context, state) {
@@ -102,12 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else {
+                    var calcItems = state.calcItems.toList();
+                    if (sortAlphabetically) {
+                      calcItems.sort(
+                        (a, b) =>
+                            (a.price.name ?? "").compareTo(b.price.name ?? ""),
+                      );
+                    }
+
                     return SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       sliver: SliverReorderableList(
-                        itemCount: state.calcItems.length,
+                        itemCount: calcItems.length,
                         itemBuilder: (context, i) {
-                          final calcItem = state.calcItems[i];
+                          final calcItem = calcItems[i];
 
                           return Padding(
                             key: ValueKey(i),
@@ -142,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
-                        onReorder: (oldIndex, newIndex) => () {},
+                        onReorder: (oldIndex, newIndex) {},
                       ),
                     );
                   }
@@ -191,6 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             SliverFillRemaining(
+              hasScrollBody: false,
               child: BlocBuilder<HomeBloc, HomeState>(
                 bloc: _homeBloc,
                 builder: (context, state) {

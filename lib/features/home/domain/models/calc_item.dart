@@ -35,4 +35,20 @@ class CalcItem {
     quantity: quantity ?? this.quantity,
     createdAt: createdAt,
   );
+
+  double totalPrice() {
+    double minPrice = price.defaultPrice;
+
+    for (var condition in price.conditions) {
+      if ((condition.from <= quantity) &&
+          (condition.to > quantity) &&
+          (condition.price < minPrice)) {
+        minPrice = condition.price;
+      }
+    }
+
+    var totalPrice = minPrice * quantity;
+
+    return totalPrice;
+  }
 }

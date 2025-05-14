@@ -18,9 +18,9 @@ class ConditionAdapter extends TypeAdapter<Condition> {
     };
     return Condition(
       uuid: fields[0] as String,
-      from: fields[1] as double?,
-      to: fields[2] as double?,
-      price: fields[3] as double?,
+      from: fields[1] as double,
+      to: fields[2] as double,
+      price: fields[3] as double,
     );
   }
 

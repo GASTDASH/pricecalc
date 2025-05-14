@@ -32,7 +32,7 @@ class TextFieldCustom extends StatelessWidget {
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
         if (onTapOutside != null) onTapOutside!();
-        debugPrint("=================");
+        debugPrint("TextFieldCustom -> onTapOutside");
       },
       keyboardType: keyboardType,
     );

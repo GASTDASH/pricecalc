@@ -5,7 +5,12 @@ part 'condition.g.dart';
 /// Объект условия, по начальному **[from]** и конечному **[to]** количеству предмета которого присваивается определённая стоимость **[price]**
 @HiveType(typeId: 1)
 class Condition extends HiveObject {
-  Condition({required this.uuid, this.from, this.to, this.price})
+  Condition({
+    required this.uuid,
+    this.from = 0,
+    this.to = double.infinity,
+    this.price = 0,
+  })
   // : assert(
   //     (from ?? 0) < (to ?? 1),
   //     "Начальное количество не может быть больше конечного",
@@ -18,15 +23,15 @@ class Condition extends HiveObject {
 
   /// Начальное количество предмета для новой стоимости
   @HiveField(1)
-  final double? from;
+  final double from;
 
   /// Конечное количество предмета для новой стоимости
   @HiveField(2)
-  final double? to;
+  final double to;
 
   /// Новая стоимость для условия
   @HiveField(3)
-  final double? price;
+  final double price;
 
   Condition copyWith({double? from, double? to, double? price}) {
     return Condition(

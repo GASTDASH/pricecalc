@@ -82,7 +82,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
           ),
           Icon(Icons.drag_handle),
           Text(
-            "${widget.calcItem.price.defaultPrice * widget.calcItem.quantity} ₽",
+            "${widget.calcItem.totalPrice()} ₽",
             style: theme.textTheme.titleLarge?.copyWith(),
           ),
         ],
