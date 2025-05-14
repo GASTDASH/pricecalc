@@ -12,7 +12,7 @@ class NameBox extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {},
+        // onTap: () {},
         child: Ink(
           height: 60,
           width: 140,

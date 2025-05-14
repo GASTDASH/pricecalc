@@ -50,12 +50,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 BlocBuilder<HomeBloc, HomeState>(
                   bloc: _homeBloc,
                   builder: (context, state) {
-                    return Text(
-                      (state is HomeLoaded && state.calcItems.isNotEmpty)
-                          ? "${state.calcItems.fold<double>(0, (sum, calcItem) => sum + calcItem.totalPrice())} ₽"
-                          : "0 ₽",
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
+                    final double sum =
+                        (state is HomeLoaded && state.calcItems.isNotEmpty)
+                            ? state.calcItems.fold<double>(
+                              0,
+                              (sum, calcItem) => sum + calcItem.totalPrice(),
+                            )
+                            : 0;
+
+                    return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (child, animation) => SlideTransition(
+                            position: Tween<Offset>(
+                              begin: Offset(0, 1),
+                              end: Offset(0, 0),
+                            ).animate(animation),
+                            child: FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            ),
+                          ),
+                      child: Text(
+                        "${sum % 1 == 0 ? sum.truncate() : sum} ₽",
+                        key: ValueKey(sum),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     );
                   },

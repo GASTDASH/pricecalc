@@ -24,18 +24,13 @@ class _CalcItemRowState extends State<CalcItemRow> {
   final quantityController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     quantityController.text =
         (widget.calcItem.quantity % 1 == 0)
             ? widget.calcItem.quantity.truncate().toString()
             : widget.calcItem.quantity.toString();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final totalPrice = widget.calcItem.totalPrice();
 
     return Dismissible(
       key: ValueKey(widget.calcItem.uuid),
@@ -55,18 +50,19 @@ class _CalcItemRowState extends State<CalcItemRow> {
       child: Row(
         spacing: 6,
         children: [
-          widget.index != null
-              ? ReorderableDragStartListener(
-                index: widget.index!,
-                child: NameBox(
-                  name:
-                      widget.calcItem.price.name == null ||
-                              widget.calcItem.price.name == ""
-                          ? "Без названия"
-                          : widget.calcItem.price.name!,
-                ),
-              )
-              : NameBox(name: widget.calcItem.price.name ?? "Без названия"),
+          // widget.index != null
+          //     ? ReorderableDragStartListener(
+          //       index: widget.index!,
+          //       child: NameBox(
+          //         name:
+          //             widget.calcItem.price.name == null ||
+          //                     widget.calcItem.price.name == ""
+          //                 ? "Без названия"
+          //                 : widget.calcItem.price.name!,
+          //       ),
+          //     )
+          //     :
+          NameBox(name: widget.calcItem.price.name ?? "Без названия"),
           Icon(Icons.close),
           Flexible(
             child: TextFieldCustom(
@@ -82,7 +78,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
           ),
           Icon(Icons.drag_handle),
           Text(
-            "${widget.calcItem.totalPrice()} ₽",
+            "${totalPrice % 1 == 0 ? totalPrice.truncate() : totalPrice} ₽",
             style: theme.textTheme.titleLarge?.copyWith(),
           ),
         ],
