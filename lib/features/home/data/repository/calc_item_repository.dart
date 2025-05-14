@@ -10,6 +10,21 @@ class CalcItemRepository {
       _box.values.toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
   Future<void> addCalcItem(Price price) async {
+    for (var calcItem in _box.values) {
+      if (calcItem.price.uuid == price.uuid) {
+        _box.put(
+          calcItem.uuid,
+          CalcItem(
+            uuid: calcItem.uuid,
+            price: calcItem.price,
+            quantity: calcItem.quantity + 1,
+            createdAt: calcItem.createdAt,
+          ),
+        );
+        return;
+      }
+    }
+
     var uuid = Uuid().v4();
     _box.put(
       uuid,
