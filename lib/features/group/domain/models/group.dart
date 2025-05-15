@@ -14,4 +14,6 @@ class Group {
   /// Название группы
   @HiveField(1)
   final String? name;
+
+  Group copyWith({String? name}) => Group(uuid: uuid, name: name ?? this.name);
 }

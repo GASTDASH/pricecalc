@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/group/group.dart';
+import 'package:pricecalc/features/group/presentation/widgets/rename_dialog.dart';
 
 class AddGroupBottomSheet extends StatefulWidget {
   const AddGroupBottomSheet({super.key});
@@ -60,28 +61,42 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
                           child: ListView.separated(
                             controller: controller,
                             itemCount: state.groups.length,
-                            itemBuilder:
-                                (context, i) => ListTile(
-                                  title: Text(
-                                    state.groups[i].name ?? "Без названия",
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.edit),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.delete),
-                                      ),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pop(state.groups[i]);
-                                  },
+                            itemBuilder: (context, i) {
+                              final Group group = state.groups[i];
+
+                              return ListTile(
+                                title: Text(group.name ?? "Без названия"),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        final String? newName =
+                                            await showDialog(
+                                              context: context,
+                                              builder:
+                                                  (context) => RenameDialog(
+                                                    oldName: group.name,
+                                                  ),
+                                            );
+
+                                        _groupCubit.updateGroup(
+                                          group.copyWith(name: newName),
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.delete),
+                                    ),
+                                  ],
                                 ),
+                                onTap: () {
+                                  Navigator.of(context).pop(group);
+                                },
+                              );
+                            },
                             separatorBuilder:
                                 (context, index) => Divider(height: 0),
                           ),
