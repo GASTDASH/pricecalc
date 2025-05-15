@@ -28,7 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // УРА Я ЭТО СДЕЛАЛ
     _priceSubscription = _priceBloc.stream.listen((state) async {
       if (state is PriceLoaded) {
-        // Обновление нужных записи в Box'е
+        // Обновление нужных записей в Box'е
         final calcItems = await _calcItemRepository.getCalcItems();
         for (var price in state.prices) {
           for (var calcItem in calcItems) {

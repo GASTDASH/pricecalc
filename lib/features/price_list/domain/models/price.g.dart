@@ -23,13 +23,14 @@ class PriceAdapter extends TypeAdapter<Price> {
       units: fields[3] as String?,
       conditions: (fields[4] as List).cast<Condition>(),
       createdAt: fields[5] as DateTime,
+      groupUuid: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Price obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class PriceAdapter extends TypeAdapter<Price> {
       ..writeByte(4)
       ..write(obj.conditions)
       ..writeByte(5)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(6)
+      ..write(obj.groupUuid);
   }
 
   @override

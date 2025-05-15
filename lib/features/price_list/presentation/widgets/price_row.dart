@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/condition/condition.dart';
+import 'package:pricecalc/features/group/group.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
 class PriceRow extends StatefulWidget {
@@ -98,35 +99,79 @@ class _PriceRowState extends State<PriceRow> {
         ),
         Row(
           children: [
-            IconButton(
-              onPressed: () async {
-                final List<Condition>? conditions =
-                    await showModalBottomSheetCustom(
-                      context: context,
-                      builder:
-                          (context) => EditConditionsBottomSheet(
-                            conditions: widget.price.conditions.toList(),
-                            units: widget.price.units ?? "шт.",
-                          ),
-                    );
+            PopupMenuButton(
+              itemBuilder:
+                  (context) => [
+                    PopupMenuItem(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 24,
+                        children: [
+                          Text("Изменить условия"),
+                          widget.price.conditions.isNotEmpty
+                              ? Badge(
+                                alignment: Alignment.bottomRight,
+                                backgroundColor: theme.primaryColor,
+                                label: Text(
+                                  "${widget.price.conditions.length}",
+                                ),
+                                child: Icon(Icons.edit),
+                              )
+                              : Icon(Icons.edit),
+                        ],
+                      ),
+                      onTap: () async {
+                        final List<Condition>? conditions =
+                            await showModalBottomSheetCustom(
+                              context: context,
+                              builder:
+                                  (context) => EditConditionsBottomSheet(
+                                    conditions:
+                                        widget.price.conditions.toList(),
+                                    units: widget.price.units ?? "шт.",
+                                  ),
+                            );
 
-                if (conditions != null) {
-                  _priceBloc.add(
-                    SavePrice(
-                      price: widget.price.copyWith(conditions: conditions),
+                        if (conditions != null) {
+                          _priceBloc.add(
+                            SavePrice(
+                              price: widget.price.copyWith(
+                                conditions: conditions,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
-                  );
-                }
-              },
-              icon:
-                  widget.price.conditions.isNotEmpty
-                      ? Badge(
-                        alignment: Alignment.bottomRight,
-                        backgroundColor: theme.primaryColor,
-                        label: Text("${widget.price.conditions.length}"),
-                        child: Icon(Icons.edit),
-                      )
-                      : Icon(Icons.edit),
+                    PopupMenuItem(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 24,
+                        children: [
+                          Text("Добавить в группу"),
+                          Icon(Icons.folder),
+                        ],
+                      ),
+                      onTap: () async {
+                        final Group? group = await showModalBottomSheetCustom(
+                          context: context,
+                          builder: (context) => AddGroupBottomSheet(),
+                        );
+
+                        if (group != null) {
+                          _priceBloc.add(
+                            SavePrice(
+                              price: widget.price.copyWith(
+                                groupUuid: group.uuid,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
             ),
             IconButton(
               onPressed: () {
