@@ -20,7 +20,6 @@ class _PriceListScreenState extends State<PriceListScreen> {
     super.initState();
 
     _priceBloc = BlocProvider.of<PriceBloc>(context)..add(LoadPrices());
-    BlocProvider.of<GroupCubit>(context).getGroups();
   }
 
   @override
