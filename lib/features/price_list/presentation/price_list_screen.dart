@@ -14,14 +14,13 @@ class PriceListScreen extends StatefulWidget {
 
 class _PriceListScreenState extends State<PriceListScreen> {
   late final PriceBloc _priceBloc;
-  late final GroupCubit _groupCubit;
 
   @override
   void initState() {
     super.initState();
 
     _priceBloc = BlocProvider.of<PriceBloc>(context)..add(LoadPrices());
-    _groupCubit = BlocProvider.of<GroupCubit>(context)..getGroups();
+    BlocProvider.of<GroupCubit>(context).getGroups();
   }
 
   @override
