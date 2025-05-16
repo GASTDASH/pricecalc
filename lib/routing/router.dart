@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pricecalc/features/history/presentation/history_screen.dart';
 import 'package:pricecalc/features/home/home.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/features/root/root.dart';
@@ -54,6 +55,19 @@ final router = GoRouter(
                     context: context,
                     state: state,
                     child: PriceListScreen(),
+                  ),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/history',
+              pageBuilder:
+                  (context, state) => buildPageWithDefaultTransition(
+                    context: context,
+                    state: state,
+                    child: HistoryScreen(),
                   ),
             ),
           ],

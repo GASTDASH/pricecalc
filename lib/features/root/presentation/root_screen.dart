@@ -51,6 +51,8 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
@@ -68,6 +70,8 @@ class _RootScreenState extends State<RootScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: items,
         currentIndex: widget.navigationShell.currentIndex,
+        fixedColor: theme.primaryColor,
+        unselectedItemColor: theme.hintColor,
         onTap:
             (index) => widget.navigationShell.goBranch(
               index,
@@ -83,6 +87,7 @@ class _RootScreenState extends State<RootScreen> {
       icon: Icon(Icons.request_quote),
       label: "Прайс-лист",
     ),
+    BottomNavigationBarItem(icon: Icon(Icons.history), label: "История"),
     BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Настройки"),
   ];
 }
