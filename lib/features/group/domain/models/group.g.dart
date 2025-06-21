@@ -13,9 +13,7 @@ class GroupAdapter extends TypeAdapter<Group> {
   @override
   Group read(BinaryReader reader) {
     final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
+    final fields = <int, dynamic>{for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read()};
     return Group(uuid: fields[0] as String, name: fields[1] as String?);
   }
 
@@ -34,8 +32,5 @@ class GroupAdapter extends TypeAdapter<Group> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GroupAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      identical(this, other) || other is GroupAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
