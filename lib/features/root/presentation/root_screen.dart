@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pricecalc/features/group/group.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
 class RootScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _RootScreenState extends State<RootScreen> {
       initialPage: widget.navigationShell.currentIndex,
     );
     BlocProvider.of<PriceBloc>(context).add(LoadPrices());
+    BlocProvider.of<GroupCubit>(context).getGroups();
   }
 
   @override
@@ -49,6 +51,8 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
@@ -66,6 +70,8 @@ class _RootScreenState extends State<RootScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: items,
         currentIndex: widget.navigationShell.currentIndex,
+        fixedColor: theme.primaryColor,
+        unselectedItemColor: theme.hintColor,
         onTap:
             (index) => widget.navigationShell.goBranch(
               index,
@@ -81,6 +87,7 @@ class _RootScreenState extends State<RootScreen> {
       icon: Icon(Icons.request_quote),
       label: "Прайс-лист",
     ),
+    BottomNavigationBarItem(icon: Icon(Icons.history), label: "История"),
     BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Настройки"),
   ];
 }

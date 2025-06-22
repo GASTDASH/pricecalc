@@ -1,50 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'price.dart';
+part of 'history_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PriceAdapter extends TypeAdapter<Price> {
+class HistoryItemAdapter extends TypeAdapter<HistoryItem> {
   @override
-  final int typeId = 0;
+  final int typeId = 4;
 
   @override
-  Price read(BinaryReader reader) {
+  HistoryItem read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Price(
+    return HistoryItem(
       uuid: fields[0] as String,
-      name: fields[1] as String?,
-      defaultPrice: fields[2] as double,
-      units: fields[3] as String?,
-      conditions: (fields[4] as List).cast<Condition>(),
-      createdAt: fields[5] as DateTime,
-      groupUuid: fields[6] as String?,
+      calcItems: (fields[1] as List).cast<CalcItem>(),
+      savedAt: fields[2] as DateTime,
+      totalAmount: fields[3] as double,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Price obj) {
+  void write(BinaryWriter writer, HistoryItem obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.calcItems)
       ..writeByte(2)
-      ..write(obj.defaultPrice)
+      ..write(obj.savedAt)
       ..writeByte(3)
-      ..write(obj.units)
-      ..writeByte(4)
-      ..write(obj.conditions)
-      ..writeByte(5)
-      ..write(obj.createdAt)
-      ..writeByte(6)
-      ..write(obj.groupUuid);
+      ..write(obj.totalAmount);
   }
 
   @override
@@ -53,7 +44,7 @@ class PriceAdapter extends TypeAdapter<Price> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PriceAdapter &&
+      other is HistoryItemAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

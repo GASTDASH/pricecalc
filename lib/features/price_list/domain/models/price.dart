@@ -8,11 +8,12 @@ part 'price.g.dart';
 class Price {
   Price({
     required this.uuid,
-    this.name = "",
+    this.name,
     this.defaultPrice = 0,
     this.units,
     this.conditions = const [],
     required this.createdAt,
+    this.groupUuid,
   });
 
   /// Уникальный ID цены
@@ -39,11 +40,16 @@ class Price {
   @HiveField(5)
   final DateTime createdAt;
 
+  /// ID папки
+  @HiveField(6)
+  final String? groupUuid;
+
   Price copyWith({
     String? name,
     double? defaultPrice,
     String? units,
     List<Condition>? conditions,
+    String? groupUuid,
   }) => Price(
     uuid: uuid,
     name: name ?? this.name,
@@ -51,5 +57,6 @@ class Price {
     units: units ?? this.units,
     conditions: conditions ?? this.conditions,
     createdAt: createdAt,
+    groupUuid: groupUuid ?? this.groupUuid,
   );
 }

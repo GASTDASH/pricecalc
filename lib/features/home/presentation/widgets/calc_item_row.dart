@@ -3,13 +3,7 @@ import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/home/home.dart';
 
 class CalcItemRow extends StatefulWidget {
-  const CalcItemRow({
-    super.key,
-    this.index,
-    required this.calcItem,
-    this.onDismissed,
-    this.onChanged,
-  });
+  const CalcItemRow({super.key, this.index, required this.calcItem, this.onDismissed, this.onChanged});
 
   final int? index;
   final CalcItem calcItem;
@@ -27,9 +21,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     quantityController.text =
-        (widget.calcItem.quantity % 1 == 0)
-            ? widget.calcItem.quantity.truncate().toString()
-            : widget.calcItem.quantity.toString();
+        (widget.calcItem.quantity % 1 == 0) ? widget.calcItem.quantity.truncate().toString() : widget.calcItem.quantity.toString();
     final totalPrice = widget.calcItem.totalPrice();
 
     return Dismissible(
@@ -40,11 +32,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
         color: theme.hintColor.withValues(alpha: 0.1),
         child: Padding(
           padding: const EdgeInsets.only(right: 18),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            spacing: 12,
-            children: [Text("Удалить"), Icon(Icons.delete_outline)],
-          ),
+          child: Row(mainAxisAlignment: MainAxisAlignment.end, spacing: 12, children: [Text("Удалить"), Icon(Icons.delete_outline)]),
         ),
       ),
       child: Row(
@@ -69,18 +57,17 @@ class _CalcItemRowState extends State<CalcItemRow> {
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               controller: quantityController,
+              // Или
               onChanged: widget.onChanged,
+              // Или
+              onTapOutside: () {
+                if (widget.onChanged != null) widget.onChanged!(quantityController.text);
+              },
             ),
           ),
-          Text(
-            widget.calcItem.price.units ?? "шт.",
-            style: theme.textTheme.bodyLarge,
-          ),
+          Text(widget.calcItem.price.units ?? "шт.", style: theme.textTheme.bodyLarge),
           Icon(Icons.drag_handle),
-          Text(
-            "${totalPrice % 1 == 0 ? totalPrice.truncate() : totalPrice} ₽",
-            style: theme.textTheme.titleLarge?.copyWith(),
-          ),
+          Text("${totalPrice % 1 == 0 ? totalPrice.truncate() : totalPrice} ₽", style: theme.textTheme.titleLarge?.copyWith()),
         ],
       ),
     );

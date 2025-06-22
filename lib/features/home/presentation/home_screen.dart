@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/core/presentation/widgets/dialog_custom.dart';
+import 'package:pricecalc/features/history/history.dart';
 import 'package:pricecalc/features/home/home.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
@@ -33,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  double sumAmount(List<CalcItem> calcItems) =>
+      (calcItems.isNotEmpty)
+          ? calcItems.fold<double>(
+            0,
+            (sum, calcItem) => sum + calcItem.totalPrice(),
+          )
+          : 0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -51,12 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   bloc: _homeBloc,
                   builder: (context, state) {
                     final double sum =
-                        (state is HomeLoaded && state.calcItems.isNotEmpty)
-                            ? state.calcItems.fold<double>(
-                              0,
-                              (sum, calcItem) => sum + calcItem.totalPrice(),
-                            )
-                            : 0;
+                        (state is HomeLoaded) ? sumAmount(state.calcItems) : 0;
 
                     return AnimatedSwitcher(
                       duration: Duration(milliseconds: 200),
@@ -95,7 +100,53 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined)),
+                IconButton(
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder:
+                          (context) => DialogCustom(
+                            title: "Сохранение",
+                            text: "Сохранить данный расчёт в историю?",
+                            child: Row(
+                              spacing: 12,
+                              children: [
+                                Expanded(
+                                  child: ButtonCustom(
+                                    text: "Да",
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+
+                                      final double sum =
+                                          (_homeBloc.state is HomeLoaded)
+                                              ? sumAmount(
+                                                _homeBloc.state.calcItems,
+                                              )
+                                              : 0;
+
+                                      BlocProvider.of<HistoryCubit>(
+                                        context,
+                                      ).addHistoryItem(
+                                        calcItems: _homeBloc.state.calcItems,
+                                        totalAmount: sum,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ButtonCustom(
+                                    text: "Нет",
+                                    outline: true,
+                                    onTap: () => Navigator.of(context).pop(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    );
+                  },
+                  icon: Icon(Icons.save_outlined),
+                ),
                 IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
               ],
             ),
