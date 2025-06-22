@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/group/group.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 
 class PriceListScreen extends StatefulWidget {
   const PriceListScreen({super.key});
@@ -55,10 +53,16 @@ class _PriceListScreenState extends State<PriceListScreen> {
                       List<Group> groupsWithoutNoPrices = [];
                       if (groups != null) {
                         for (var gr in groups) {
-                          if (state.prices.indexWhere((p) => p.groupUuid == gr.uuid) != -1) {
+                          if (state.prices.indexWhere(
+                                (p) => p.groupUuid == gr.uuid,
+                              ) !=
+                              -1) {
                             groupsWithoutNoPrices.add(gr);
                           }
-                          if (state.prices.indexWhere((p) => p.groupUuid == null) != -1) {
+                          if (state.prices.indexWhere(
+                                (p) => p.groupUuid == null,
+                              ) !=
+                              -1) {
                             hasNoGroup = true;
                           }
                         }
@@ -66,10 +70,10 @@ class _PriceListScreenState extends State<PriceListScreen> {
 
                       List<Price> sortedPrices = [];
                       sortedPrices = state.prices;
-                      sortedPrices.sort((a, b) => (a.groupUuid ?? "0").compareTo(b.groupUuid ?? "0"));
-
-                      GetIt.I<Talker>().info(state.prices.map((e) => e.groupUuid));
-                      GetIt.I<Talker>().info(groupsWithoutNoPrices.map((e) => e.uuid));
+                      sortedPrices.sort(
+                        (a, b) =>
+                            (a.groupUuid ?? "0").compareTo(b.groupUuid ?? "0"),
+                      );
 
                       return SliverPadding(
                         padding: const EdgeInsets.only(left: 24, right: 12),
@@ -77,17 +81,26 @@ class _PriceListScreenState extends State<PriceListScreen> {
                           separator: SizedBox(height: 24),
                           elements: sortedPrices,
                           groupBy: (price) => price.groupUuid ?? "0",
-                          itemBuilder: (context, price) => PriceRow(price: price),
-                          itemComparator: (price1, price2) => (price1.groupUuid ?? "0").compareTo(price2.groupUuid ?? "0"),
+                          itemBuilder:
+                              (context, price) => PriceRow(price: price),
+                          itemComparator:
+                              (price1, price2) => (price1.groupUuid ?? "0")
+                                  .compareTo(price2.groupUuid ?? "0"),
                           groupComparator: (groupUuid1, groupUuid2) {
                             if (groupUuid1 == "0" || groupUuid2 == "0") {
                               return -1;
                             }
 
-                            final group1 = (groupsWithoutNoPrices.firstWhere((g) => g.uuid == groupUuid1));
-                            final group2 = (groupsWithoutNoPrices.firstWhere((g) => g.uuid == groupUuid2));
+                            final group1 = (groupsWithoutNoPrices.firstWhere(
+                              (g) => g.uuid == groupUuid1,
+                            ));
+                            final group2 = (groupsWithoutNoPrices.firstWhere(
+                              (g) => g.uuid == groupUuid2,
+                            ));
 
-                            return (group1.name ?? "").compareTo(group2.name ?? "");
+                            return (group1.name ?? "").compareTo(
+                              group2.name ?? "",
+                            );
                           },
                           groupSeparatorBuilder: (groupUuid) {
                             if (groupUuid == "0") hasNoGroup = true;
@@ -99,7 +112,15 @@ class _PriceListScreenState extends State<PriceListScreen> {
 
                             return Padding(
                               padding: EdgeInsets.only(
-                                top: (groupUuid == "0" || (groupUuid == groupsWithoutNoPrices.first.uuid && !hasNoGroup)) ? 0 : 32,
+                                top:
+                                    (groupUuid == "0" ||
+                                            (groupUuid ==
+                                                    groupsWithoutNoPrices
+                                                        .first
+                                                        .uuid &&
+                                                !hasNoGroup))
+                                        ? 0
+                                        : 32,
                                 bottom: 8,
                               ),
                               child: Text(
@@ -108,7 +129,9 @@ class _PriceListScreenState extends State<PriceListScreen> {
                                     : (group.name == null || group.name! == "")
                                     ? "Без названия"
                                     : group.name!,
-                                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             );
                           },
