@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pricecalc/core/core.dart';
-import 'package:pricecalc/core/presentation/widgets/dialog_custom.dart';
 import 'package:pricecalc/features/history/history.dart';
 import 'package:pricecalc/features/home/home.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
