@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pricecalc/core/presentation/widgets/bottom_sheet_custom.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pricecalc/core/core.dart';
+import 'package:pricecalc/features/group/group.dart';
 import 'package:pricecalc/features/home/home.dart';
+import 'package:pricecalc/features/home/presentation/widgets/grouped_item_list.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
 class AddItemBottomSheet extends StatefulWidget {
@@ -14,6 +17,7 @@ class AddItemBottomSheet extends StatefulWidget {
 
 class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
   bool _wrap = true;
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +52,13 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
                           children: [
                             Icon(Icons.search),
                             Flexible(
-                              child: TextField(
+                              child: TextFieldCustom(
+                                onChanged: (_) => setState(() {}),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "Найти...",
                                 ),
+                                controller: searchController,
                               ),
                             ),
                           ],
@@ -90,39 +96,37 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
                       ),
                     ),
                   )
-                  : _wrap
-                  ? Expanded(
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: Wrap(
-                        runSpacing: 12,
-                        spacing: 12,
-                        children: [
-                          for (var price in widget.prices)
-                            ItemChip(
-                              price: price,
-                              onTap: () {
-                                Navigator.of(context).pop(price);
-                              },
+                  : Builder(
+                    builder: (context) {
+                      final filteredPrices =
+                          searchController.text.isEmpty
+                              ? widget.prices
+                              : widget.prices
+                                  .where(
+                                    (price) => (price.name ?? "").contains(
+                                      searchController.text,
+                                    ),
+                                  )
+                                  .toList();
+
+                      return BlocSelector<GroupCubit, GroupState, List<Group>?>(
+                        selector: (groupState) {
+                          if (groupState is GroupLoaded) {
+                            return groupState.groups;
+                          }
+                          return null;
+                        },
+                        builder:
+                            (context, groups) => GroupedItemList(
+                              prices: filteredPrices,
+                              groups: groups,
+                              type:
+                                  _wrap
+                                      ? GroupedItemListType.wrap
+                                      : GroupedItemListType.list,
                             ),
-                        ],
-                      ),
-                    ),
-                  )
-                  : Expanded(
-                    // height: MediaQuery.of(context).size.height - 364,
-                    child: ListView.separated(
-                      controller: controller,
-                      itemCount: widget.prices.length,
-                      itemBuilder:
-                          (context, i) => ItemTile(
-                            price: widget.prices[i],
-                            onTap: () {
-                              Navigator.of(context).pop(widget.prices[i]);
-                            },
-                          ),
-                      separatorBuilder: (context, index) => Divider(height: 0),
-                    ),
+                      );
+                    },
                   ),
             ],
           ),
