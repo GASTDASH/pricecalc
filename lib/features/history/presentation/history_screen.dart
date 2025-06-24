@@ -22,8 +22,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -33,23 +31,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             builder: (context, state) {
               if (state is HistoryLoaded) {
                 if (state.items.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 300,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        spacing: 12,
-                        children: [
-                          Text(
-                            "У вас пока нет сохранённых расчётов",
-                            style: theme.textTheme.headlineMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                          Icon(Icons.history_toggle_off, size: 64),
-                        ],
-                      ),
-                    ),
-                  );
+                  return SliverToBoxAdapter(child: NoHistoryBanner());
                 }
                 var sortedItems =
                     state.items..sort((a, b) => b.savedAt.compareTo(a.savedAt));
