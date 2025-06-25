@@ -34,7 +34,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SettingCard(
                   icon: Icons.info_outline,
                   title: "О приложении",
-                  onTap: () {},
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => DialogCustom(
+                            title: "Прайс-Калькулятор",
+                            text:
+                                "Версия v1.0.0\n\nПриложение сделал GASTDASH ~ Щербаков Алексей Вадимович в 2025 году при поддержке JJSH",
+                          ),
+                    );
+                  },
                 ),
               ],
             ),

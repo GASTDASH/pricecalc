@@ -20,7 +20,7 @@ class PriceCalcApp extends StatelessWidget {
         BlocProvider(create: (context) => HistoryCubit(HistoryRepository())),
       ],
       child: MaterialApp.router(
-        title: 'Прайс калькулятор',
+        title: 'Прайс-Калькулятор',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: primaryColor,
