@@ -147,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   icon: Icon(Icons.save_outlined),
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
               ],
             ),
             SliverToBoxAdapter(child: SizedBox(height: 6)),
