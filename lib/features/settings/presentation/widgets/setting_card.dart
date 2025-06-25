@@ -26,7 +26,6 @@ class SettingCard extends StatelessWidget {
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            // border: Border.all(color: theme.hintColor),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(

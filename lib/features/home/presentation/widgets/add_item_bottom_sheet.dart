@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/group/group.dart';
 import 'package:pricecalc/features/home/home.dart';
-import 'package:pricecalc/features/home/presentation/widgets/grouped_item_list.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 
 class AddItemBottomSheet extends StatefulWidget {
