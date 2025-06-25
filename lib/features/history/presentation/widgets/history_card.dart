@@ -43,13 +43,30 @@ class HistoryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                for (var calcItem in historyItem.calcItems)
-                  Text(
-                    "${calcItem.price.name ?? "Без названия"} (${calcItem.quantity} ${calcItem.price.units ?? "шт."}) - ${calcItem.price.defaultPrice % 1 == 0 ? calcItem.price.defaultPrice.truncate() : calcItem.price.defaultPrice} ₽",
-                  ),
+                Table(
+                  columnWidths: {0: IntrinsicColumnWidth()},
+                  children: [
+                    for (var calcItem in historyItem.calcItems)
+                      TableRow(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: Text(
+                              "${calcItem.quantity.truncateIfInt()} ${calcItem.price.units ?? "шт."}",
+                            ),
+                          ),
+                          Text(calcItem.price.name ?? "Без названия"),
+                          Text(
+                            "${calcItem.totalPrice().truncateIfInt()} ₽",
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
                 SizedBox(height: 6),
                 Text(
-                  "Итого: ${historyItem.totalAmount % 1 == 0 ? historyItem.totalAmount.truncate() : historyItem.totalAmount} ₽",
+                  "Итого: ${historyItem.totalAmount.truncateIfInt()} ₽",
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
