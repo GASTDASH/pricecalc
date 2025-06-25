@@ -24,6 +24,10 @@ void main() async {
   await Hive.openBox<CalcItem>('calc_items');
   await Hive.openBox<Group>('groups');
   await Hive.openBox<HistoryItem>('history');
+  await Hive.openBox('settings');
+  if (Hive.box('settings').get('onboarding') == null) {
+    Hive.box('settings').put('onboarding', true);
+  }
 
   final talker = Talker();
   Bloc.observer = TalkerBlocObserver(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pricecalc/features/history/presentation/history_screen.dart';
 import 'package:pricecalc/features/home/home.dart';
+import 'package:pricecalc/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/features/root/root.dart';
 import 'package:pricecalc/features/settings/settings.dart';
@@ -24,8 +26,18 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
 }
 
 final router = GoRouter(
-  initialLocation: '/home',
+  initialLocation:
+      Hive.box('settings').get('onboarding') == true ? '/onboarding' : '/home',
   routes: [
+    GoRoute(
+      path: '/onboarding',
+      pageBuilder:
+          (context, state) => buildPageWithDefaultTransition(
+            context: context,
+            state: state,
+            child: OnboardingScreen(),
+          ),
+    ),
     StatefulShellRoute(
       builder: (context, state, navigationShell) => navigationShell,
       navigatorContainerBuilder:
