@@ -6,6 +6,7 @@ import 'package:pricecalc/features/history/history.dart';
 import 'package:pricecalc/features/home/home.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
 import 'package:pricecalc/utils/utils.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -226,27 +227,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
-                Builder(
-                  builder: (context) {
+                BlocBuilder<PriceBloc, PriceState>(
+                  builder: (context, priceState) {
                     return SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(24),
                         child: ButtonCustom(
                           onTap: () async {
-                            if (state is PriceLoaded) {
+                            GetIt.I<Talker>().debug(state is PriceLoaded);
+                            if (priceState is PriceLoaded) {
                               final Price? price =
                                   await showModalBottomSheetCustom(
                                     context: context,
                                     builder:
                                         (context) => AddItemBottomSheet(
-                                          prices: (state as PriceLoaded).prices,
+                                          prices: priceState.prices,
                                         ),
                                   );
 
                               if (price != null) {
                                 _homeBloc.add(AddCalcItem(price: price));
                               }
-                            } else if (state is PriceLoading) {
+                            } else if (priceState is PriceLoading) {
                               ScaffoldMessenger.of(
                                 context,
                               ).removeCurrentSnackBar();
