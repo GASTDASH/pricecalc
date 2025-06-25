@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/home/home.dart';
+import 'package:pricecalc/utils/utils.dart';
 
 class CalcItemRow extends StatefulWidget {
   const CalcItemRow({
@@ -26,10 +27,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    quantityController.text =
-        (widget.calcItem.quantity % 1 == 0)
-            ? widget.calcItem.quantity.truncate().toString()
-            : widget.calcItem.quantity.toString();
+    quantityController.text = (widget.calcItem.quantity.truncateIfInt());
     final totalPrice = widget.calcItem.totalPrice();
 
     return Dismissible(
@@ -79,8 +77,9 @@ class _CalcItemRowState extends State<CalcItemRow> {
               onChanged: widget.onChanged,
               // Или
               onTapOutside: () {
-                if (widget.onChanged != null)
+                if (widget.onChanged != null) {
                   widget.onChanged!(quantityController.text);
+                }
               },
             ),
           ),
@@ -90,7 +89,7 @@ class _CalcItemRowState extends State<CalcItemRow> {
           ),
           Icon(Icons.drag_handle),
           Text(
-            "${totalPrice % 1 == 0 ? totalPrice.truncate() : totalPrice} ₽",
+            "${totalPrice.truncateIfInt()} ₽",
             style: theme.textTheme.titleLarge?.copyWith(),
           ),
         ],

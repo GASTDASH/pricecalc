@@ -16,3 +16,7 @@ extension DateTimeExtension on DateTime {
         int() => "{month}",
       }} $year";
 }
+
+extension DoubleExtension on double {
+  String truncateIfInt() => this % 1 == 0 ? "${truncate()}" : "$this";
+}

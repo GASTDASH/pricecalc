@@ -5,6 +5,7 @@ import 'package:pricecalc/core/core.dart';
 import 'package:pricecalc/features/history/history.dart';
 import 'package:pricecalc/features/home/home.dart';
 import 'package:pricecalc/features/price_list/price_list.dart';
+import 'package:pricecalc/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                       child: Text(
-                        "${sum % 1 == 0 ? sum.truncate() : sum} ₽",
+                        "${sum.truncateIfInt()} ₽",
                         key: ValueKey(sum),
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.w700,
