@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pricecalc/features/condition/condition.dart';
 import 'package:pricecalc/features/group/group.dart';
@@ -13,6 +14,8 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await GoogleFonts.pendingFonts([GoogleFonts.montserratTextTheme()]);
 
   await Hive.initFlutter();
   Hive.registerAdapter(ConditionAdapter());
