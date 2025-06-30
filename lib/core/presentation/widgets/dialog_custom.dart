@@ -14,7 +14,10 @@ class DialogCustom extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        decoration: BoxDecoration(color: theme.scaffoldBackgroundColor, borderRadius: BorderRadius.circular(18)),
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(18),
+        ),
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: 200, maxWidth: 400),
           child: Padding(
@@ -23,9 +26,17 @@ class DialogCustom extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(title ?? "", style: theme.textTheme.headlineMedium),
+                Text(
+                  title ?? "",
+                  style: theme.textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 12),
-                Text(text ?? "", style: theme.textTheme.bodyLarge, textAlign: TextAlign.center),
+                Text(
+                  text ?? "",
+                  style: theme.textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
                 child != null ? SizedBox(height: 24) : SizedBox.shrink(),
                 child ?? SizedBox.shrink(),
               ],
