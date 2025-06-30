@@ -19,8 +19,6 @@ class GroupedPriceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final List<String> groupUuids = [];
     for (var price in prices) {
       if (groupUuids.indexWhere((uuid) => uuid == (price.groupUuid ?? "0")) ==
@@ -47,42 +45,15 @@ class GroupedPriceList extends StatelessWidget {
         delegate: SliverChildListDelegate([
           if (groupUuids.isNotEmpty)
             for (var groupUuid in groupUuids)
-              Builder(
-                builder: (context) {
-                  final group = (groups ?? []).firstWhere(
-                    (group) => group.uuid == groupUuid,
-                    orElse: () => Group(uuid: "0"),
-                  );
-
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 32),
-                    child: Column(
-                      spacing: 8,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          groupUuid == "0"
-                              ? "Без группы"
-                              : (group.name == null || group.name! == "")
-                              ? "Без названия"
-                              : group.name!,
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Column(
-                          spacing: 24,
-                          children: [
-                            for (var price in prices.where(
-                              (price) => (price.groupUuid ?? "0") == group.uuid,
-                            ))
-                              PriceRow(price: price),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
+              PriceGroup(
+                group: (groups ?? []).firstWhere(
+                  (group) => group.uuid == groupUuid,
+                  orElse: () => Group(uuid: "0"),
+                ),
+                prices:
+                    prices
+                        .where((price) => (price.groupUuid ?? "0") == groupUuid)
+                        .toList(),
               ),
         ]),
       ),

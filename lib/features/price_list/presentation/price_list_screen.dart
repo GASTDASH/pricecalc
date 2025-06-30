@@ -65,13 +65,17 @@ class _PriceListScreenState extends State<PriceListScreen> {
                   SliverToBoxAdapter(child: SizedBox(height: 24)),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ).copyWith(bottom: 24),
                       child: ButtonCustom(
                         onTap:
                             state is PriceLoading
                                 ? null
                                 : () {
-                                  _priceBloc.add(AddPrice());
+                                  _priceBloc.add(
+                                    AddPrice(),
+                                  ); // TODO: Если "Без группы" свёрнуто, то развернуть
                                 },
                         isLoading: state is PriceLoading,
                         text: "Добавить",
