@@ -50,7 +50,6 @@ class _PriceListScreenState extends State<PriceListScreen> {
                       },
                       builder: (context, groups) {
                         if (groups != null) {
-                          // TODO: Сделать скрытие групп
                           return GroupedPriceList(
                             prices: state.prices,
                             padding: const EdgeInsets.only(left: 24, right: 12),
