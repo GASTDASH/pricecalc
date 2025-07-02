@@ -61,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           (context) => DialogCustom(
             title: "Прайс-Калькулятор",
             text:
-                "Версия v1.0.1\n\nПриложение сделал GASTDASH ~ Щербаков Алексей Вадимович в 2025 году при поддержке JJSH",
+                "Версия v1.0.2\n\nПриложение сделал GASTDASH ~ Щербаков Алексей Вадимович в 2025 году при поддержке JJSH",
           ),
     );
   }
