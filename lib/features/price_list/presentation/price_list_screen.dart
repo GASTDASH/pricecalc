@@ -50,11 +50,8 @@ class _PriceListScreenState extends State<PriceListScreen> {
                       },
                       builder: (context, groups) {
                         if (groups != null) {
-                          // TODO: Сделать скрытие групп
                           return GroupedPriceList(
                             prices: state.prices,
-                            itemBuilder:
-                                (context, price) => PriceRow(price: price),
                             padding: const EdgeInsets.only(left: 24, right: 12),
                             groups: groups,
                           );
@@ -67,13 +64,17 @@ class _PriceListScreenState extends State<PriceListScreen> {
                   SliverToBoxAdapter(child: SizedBox(height: 24)),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ).copyWith(bottom: 24),
                       child: ButtonCustom(
                         onTap:
                             state is PriceLoading
                                 ? null
                                 : () {
-                                  _priceBloc.add(AddPrice());
+                                  _priceBloc.add(
+                                    AddPrice(),
+                                  ); // TODO: Если "Без группы" свёрнуто, то развернуть
                                 },
                         isLoading: state is PriceLoading,
                         text: "Добавить",

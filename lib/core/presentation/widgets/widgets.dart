@@ -6,5 +6,6 @@ export 'bottom_sheet_custom.dart';
 export 'button_custom.dart';
 export 'dialog_custom.dart';
 export 'error_banner.dart';
+export 'expanded_section.dart';
 export 'loading_banner.dart';
 export 'text_field_custom.dart';

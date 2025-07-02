@@ -31,6 +31,18 @@ class GroupedItemList extends StatelessWidget {
       }
     }
 
+    if (groups != null && groups!.isNotEmpty) {
+      Map<String, String> groupsMap = {};
+      for (var group in groups!) {
+        groupsMap.addAll({group.uuid: group.name ?? "Без названия"});
+      }
+
+      groupUuids.sort(
+        (uuid1, uuid2) =>
+            (groupsMap[uuid1] ?? "0").compareTo(groupsMap[uuid2] ?? "0"),
+      );
+    }
+
     return Expanded(
       child:
           type == GroupedItemListType.wrap

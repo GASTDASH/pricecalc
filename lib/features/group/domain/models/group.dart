@@ -13,7 +13,7 @@ class Group {
 
   /// Название группы
   @HiveField(1)
-  final String? name;
+  final String? name; // Возможно лучше заменить на not nullable и по умолчанию сделать "Без названия", но тогда не забудь о Hive
 
   Group copyWith({String? name}) => Group(uuid: uuid, name: name ?? this.name);
 }
