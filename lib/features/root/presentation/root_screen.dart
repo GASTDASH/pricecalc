@@ -56,6 +56,7 @@ class _RootScreenState extends State<RootScreen> {
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => widget.children[index],
         onPageChanged: (index) {
           // Ignore tap events.
