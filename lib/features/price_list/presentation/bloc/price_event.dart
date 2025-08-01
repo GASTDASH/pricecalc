@@ -6,6 +6,12 @@ final class LoadPrices extends PriceEvent {}
 
 final class AddPrice extends PriceEvent {}
 
+final class ClonePrice extends PriceEvent {
+  ClonePrice({required this.price});
+
+  final Price price;
+}
+
 final class SavePrice extends PriceEvent {
   SavePrice({required this.price});
 

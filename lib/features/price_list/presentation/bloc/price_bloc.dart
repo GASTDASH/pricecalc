@@ -28,7 +28,19 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
-        emit(PriceError(prices: state.prices));
+        emit(PriceError(error: e, prices: state.prices));
+      }
+    });
+    on<ClonePrice>((event, emit) async {
+      try {
+        emit(PriceLoading());
+
+        await _priceRepository.addPrice(price: event.price);
+        final prices = await _priceRepository.getPrices();
+
+        emit(PriceLoaded(prices: prices));
+      } catch (e) {
+        emit(PriceError(error: e, prices: state.prices));
       }
     });
     on<RemovePrice>((event, emit) async {
@@ -40,7 +52,7 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
-        emit(PriceError(prices: state.prices));
+        emit(PriceError(error: e, prices: state.prices));
       }
     });
     on<SavePrice>((event, emit) async {
@@ -52,7 +64,7 @@ class PriceBloc extends Bloc<PriceEvent, PriceState> {
 
         emit(PriceLoaded(prices: prices));
       } catch (e) {
-        emit(PriceError(prices: state.prices));
+        emit(PriceError(error: e, prices: state.prices));
       }
     });
   }

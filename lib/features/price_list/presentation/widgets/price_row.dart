@@ -104,7 +104,7 @@ class _PriceRowState extends State<PriceRow> {
                   (context) => [
                     PopupMenuItem(
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         spacing: 24,
                         children: [
@@ -146,7 +146,7 @@ class _PriceRowState extends State<PriceRow> {
                     ),
                     PopupMenuItem(
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         spacing: 24,
                         children: [
@@ -169,6 +169,17 @@ class _PriceRowState extends State<PriceRow> {
                             ),
                           );
                         }
+                      },
+                    ),
+                    PopupMenuItem(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 24,
+                        children: [Text("Копировать"), Icon(Icons.copy)],
+                      ),
+                      onTap: () async {
+                        _priceBloc.add(ClonePrice(price: widget.price));
                       },
                     ),
                   ],

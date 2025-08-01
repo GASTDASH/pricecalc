@@ -8,9 +8,14 @@ class PriceRepository {
   Future<List<Price>> getPrices() async =>
       _box.values.toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
-  Future<void> addPrice() async {
+  Future<void> addPrice({Price? price}) async {
     var uuid = Uuid().v4();
-    _box.put(uuid, Price(uuid: uuid, createdAt: DateTime.now()));
+    _box.put(
+      uuid,
+      price == null
+          ? Price(uuid: uuid, createdAt: DateTime.now())
+          : price.copyWith(uuid: uuid, createdAt: DateTime.now()),
+    );
   }
 
   Future<void> removePrice(String uuid) async => _box.delete(uuid);
