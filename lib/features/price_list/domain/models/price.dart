@@ -45,18 +45,20 @@ class Price {
   final String? groupUuid;
 
   Price copyWith({
+    String? uuid,
     String? name,
     double? defaultPrice,
     String? units,
     List<Condition>? conditions,
+    DateTime? createdAt,
     String? groupUuid,
   }) => Price(
-    uuid: uuid,
+    uuid: uuid ?? this.uuid,
     name: name ?? this.name,
     defaultPrice: defaultPrice ?? this.defaultPrice,
     units: units ?? this.units,
     conditions: conditions ?? this.conditions,
-    createdAt: createdAt,
+    createdAt: createdAt ?? this.createdAt,
     groupUuid: groupUuid ?? this.groupUuid,
   );
 }
